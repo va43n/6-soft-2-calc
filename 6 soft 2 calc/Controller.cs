@@ -9,6 +9,7 @@
 
 		private int p;
 		private int lastInput;
+
 		private string[] formulaSymbols = { "=", "+", "-", "*", "/",
 											"^2", "^(-1)", "^(1/2)" };
 
@@ -17,14 +18,16 @@
 			this.p = p;
 
 			editor = new Editor();
-
 			processor = new Processor(p);
-
 			memory = new Memory();
-
 			history = new History();
 
 			lastInput = 0;
+		}
+
+		~Controller()
+		{
+			ClearController();
 		}
 
 		public string ButtonClicked(int tag)
@@ -42,11 +45,7 @@
                 //tag: 0123456789ABCDEF
                 //lastInput: "="
                 else if (tag <= 15 && lastInput == 22)
-				{
-					//Clear
-                    DoEditorCommand(18);
-					Clear();
-                }
+                    ClearEdit();
 
 				result = DoEditorCommand(tag);
 
@@ -55,17 +54,29 @@
 				{
 					if (processor.CheckOperation() == Operation.None)
 					{
-						throw new Exception("Чтобы узнать результат необходимо поставить хотя бы один оператор.");
+						throw new CalculatorException("Чтобы узнать результат необходимо поставить хотя бы один оператор.");
 					}
 
+					//"="
 					if (lastInput == 22)
 					{
 						result = DoProcessorCommand(tag);
 
 						editor.UpgradeFormula(formulaSymbols[tag - 22] + result);
 					}
-					else
+
+                    //"+", "-", "*", "/"
+					else if (lastInput >= 23 && lastInput <= 26)
 					{
+						result = processor.SetSameOperand();
+						editor.UpgradeFormula(result);
+
+                        result = DoProcessorCommand(tag);
+                        editor.UpgradeFormula(formulaSymbols[tag - 22] + result);
+                    }
+
+                    else
+                    {
 						PNumber number = new PNumber(result, p);
 						processor.SetOperand(number);
 
@@ -82,22 +93,31 @@
 
 					editor.ChangeCurrentNumber(result);
 				
-					history.Add(editor.GetFormula());
+					history.Add(string.Format("{0} ({1})", editor.GetFormula(), p));
 				}
 
 				//"+", "-", "*", "/"
 				else if (tag >= 23 && tag <= 26)
 				{
-					if (lastInput >= 23 && lastInput <= 26)
+                    //"+", "-", "*", "/"
+                    if (lastInput >= 23 && lastInput <= 26)
 					{
 						editor.ChangeSignInFormula(formulaSymbols[tag - 22]);
 					}
+
+					//"="
+					else if (lastInput == 22) {
+						processor.SetOperation(tag);
+						editor.UpgradeFormula(formulaSymbols[tag - 22]);
+					}
+
 					else
 					{
 						PNumber number = new PNumber(result, p);
 						processor.SetOperand(number);
 
-						if (lastInput >= 27 && lastInput <= 29 || lastInput == 22)
+                        //"^2", "^(-1)", "^(1/2)" || "="
+                        if (lastInput >= 27 && lastInput <= 29 || lastInput == 22)
 							editor.UpgradeFormula(formulaSymbols[tag - 22]);
 						else
 							editor.UpgradeFormula(result + formulaSymbols[tag - 22]);
@@ -111,10 +131,20 @@
 				//"^2", "^(-1)", "^(1/2)"
 				else if (tag >= 27 && tag <= 29)
 				{
-					if (lastInput >= 27 && lastInput <= 29)
+                    //"^2", "^(-1)", "^(1/2)"
+                    if (lastInput >= 27 && lastInput <= 29)
 					{
 						editor.UpgradeFormula(formulaSymbols[tag - 22]);
 					}
+
+                    //"+", "-", "*", "/"
+                    else if (lastInput >= 23 && lastInput <= 26)
+					{
+						result = processor.SetSameOperand();
+
+                        editor.UpgradeFormula(result + formulaSymbols[tag - 22]);
+                    }
+
 					else
 					{
 						PNumber number = new PNumber(result, p);
@@ -158,11 +188,10 @@
 			else if (tag == 32)
 			{
 				if (memory.CheckMemoryState() == MemoryState.Off)
-					throw new Exception("В памяти лежит нулевое значение.");
+					throw new CalculatorException("В памяти лежит нулевое значение.");
 
 				result = memory.CheckMemoryValue();
 				editor.ChangeCurrentNumber(result);
-
             }
 
 			//MS
@@ -192,11 +221,20 @@
 			return result;
 		}
 
-		public void ChangeNotation(int newP)
+		public string ChangeNotation(int newP)
 		{
+			string result = processor.SetNotation(newP);
+
 			p = newP;
-			processor.SetNotation(p);
-		}
+
+			memory.SetNotation(p);
+
+			editor.ClearEditor();
+			editor.ChangeCurrentNumber(result);
+			editor.UpgradeFormula(result);
+
+			return result;
+        }
 
 		public string GetFormulaFromEditor()
 		{
@@ -213,10 +251,27 @@
 			return processor.CalculateSomething(tag);
 		}
 
-		public void Clear()
+		public void ClearController()
 		{
 			processor.ClearProcessor();
 			editor.ClearEditor();
+			history.ClearHistory();
+		}
+
+		public void ClearEdit()
+		{
+            processor.ClearProcessor();
+            editor.ClearEditor();
+        }
+
+		public void ClearRecordsFromHistory()
+		{
+			history.ClearHistory();
+		}
+
+		public List<string> GetRecordsFromHistory()
+		{
+			return history.GetHistory();
 		}
 	}
 }

@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tabControl1 = new TabControl();
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
+            tabControl = new TabControl();
             tab1 = new TabPage();
             tableMain = new TableLayoutPanel();
             tableCalculatorButtons = new TableLayoutPanel();
@@ -77,10 +79,14 @@
             textBoxFormula = new TextBox();
             tab2 = new TabPage();
             tableLayoutPanel1 = new TableLayoutPanel();
-            label1 = new Label();
+            labelHistoryText = new Label();
+            listBoxHistoryRecords = new ListBox();
+            buttonClearHistory = new Button();
             tab3 = new TabPage();
             tab4 = new TabPage();
-            tabControl1.SuspendLayout();
+            labelInfo = new Label();
+            toolTip = new ToolTip(components);
+            tabControl.SuspendLayout();
             tab1.SuspendLayout();
             tableMain.SuspendLayout();
             tableCalculatorButtons.SuspendLayout();
@@ -90,22 +96,23 @@
             tableResult.SuspendLayout();
             tab2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            tab4.SuspendLayout();
             SuspendLayout();
             // 
-            // tabControl1
+            // tabControl
             // 
-            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tabControl1.Controls.Add(tab1);
-            tabControl1.Controls.Add(tab2);
-            tabControl1.Controls.Add(tab3);
-            tabControl1.Controls.Add(tab4);
-            tabControl1.ItemSize = new Size(70, 20);
-            tabControl1.Location = new Point(0, 0);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(285, 463);
-            tabControl1.SizeMode = TabSizeMode.FillToRight;
-            tabControl1.TabIndex = 0;
+            tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl.Controls.Add(tab1);
+            tabControl.Controls.Add(tab2);
+            tabControl.Controls.Add(tab3);
+            tabControl.Controls.Add(tab4);
+            tabControl.ItemSize = new Size(70, 20);
+            tabControl.Location = new Point(0, 0);
+            tabControl.Name = "tabControl";
+            tabControl.SelectedIndex = 0;
+            tabControl.Size = new Size(285, 463);
+            tabControl.SizeMode = TabSizeMode.FillToRight;
+            tabControl.TabIndex = 0;
             // 
             // tab1
             // 
@@ -202,6 +209,7 @@
             buttonSqrt.TabIndex = 35;
             buttonSqrt.Tag = "29";
             buttonSqrt.Text = "sqrt(x)";
+            toolTip.SetToolTip(buttonSqrt, "Найти корень текущего числа");
             buttonSqrt.UseVisualStyleBackColor = true;
             // 
             // buttonEqual
@@ -224,6 +232,7 @@
             buttonClearEdit.TabIndex = 32;
             buttonClearEdit.Tag = "19";
             buttonClearEdit.Text = "CE";
+            toolTip.SetToolTip(buttonClearEdit, "Удалить текущее число");
             buttonClearEdit.UseVisualStyleBackColor = true;
             // 
             // buttonClear
@@ -235,6 +244,7 @@
             buttonClear.TabIndex = 31;
             buttonClear.Tag = "18";
             buttonClear.Text = "Clear";
+            toolTip.SetToolTip(buttonClear, "Удалить выражение");
             buttonClear.UseVisualStyleBackColor = true;
             // 
             // buttonM
@@ -246,6 +256,7 @@
             buttonM.TabIndex = 0;
             buttonM.Tag = "30";
             buttonM.Text = "M";
+            toolTip.SetToolTip(buttonM, "Узнать текущее значение памяти");
             buttonM.UseVisualStyleBackColor = true;
             // 
             // buttonMC
@@ -257,6 +268,7 @@
             buttonMC.TabIndex = 1;
             buttonMC.Tag = "31";
             buttonMC.Text = "MC";
+            toolTip.SetToolTip(buttonMC, "Очистить память");
             buttonMC.UseVisualStyleBackColor = true;
             // 
             // buttonMR
@@ -268,6 +280,7 @@
             buttonMR.TabIndex = 2;
             buttonMR.Tag = "32";
             buttonMR.Text = "MR";
+            toolTip.SetToolTip(buttonMR, "Сделать текущее число равным значению памяти");
             buttonMR.UseVisualStyleBackColor = true;
             // 
             // buttonMS
@@ -279,6 +292,7 @@
             buttonMS.TabIndex = 3;
             buttonMS.Tag = "33";
             buttonMS.Text = "MS";
+            toolTip.SetToolTip(buttonMS, "Сохранить текущее значение в память");
             buttonMS.UseVisualStyleBackColor = true;
             // 
             // buttonMPlus
@@ -290,6 +304,7 @@
             buttonMPlus.TabIndex = 4;
             buttonMPlus.Tag = "34";
             buttonMPlus.Text = "M+";
+            toolTip.SetToolTip(buttonMPlus, "Добавить текущее значение к памяти");
             buttonMPlus.UseVisualStyleBackColor = true;
             // 
             // button3
@@ -433,6 +448,7 @@
             buttonChangeSign.TabIndex = 29;
             buttonChangeSign.Tag = "17";
             buttonChangeSign.Text = "+/-";
+            toolTip.SetToolTip(buttonChangeSign, "Поменять знак текущего числа");
             buttonChangeSign.UseVisualStyleBackColor = true;
             // 
             // button4
@@ -466,6 +482,7 @@
             buttonDelimeter.TabIndex = 30;
             buttonDelimeter.Tag = "16";
             buttonDelimeter.Text = ".";
+            toolTip.SetToolTip(buttonDelimeter, "Разделитель целой и дродной части");
             buttonDelimeter.UseVisualStyleBackColor = true;
             // 
             // buttonSquare
@@ -477,6 +494,7 @@
             buttonSquare.TabIndex = 26;
             buttonSquare.Tag = "27";
             buttonSquare.Text = "x^2";
+            toolTip.SetToolTip(buttonSquare, "Возвести текущее число в квадрат");
             buttonSquare.UseVisualStyleBackColor = true;
             // 
             // buttonReverse
@@ -488,6 +506,7 @@
             buttonReverse.TabIndex = 27;
             buttonReverse.Tag = "28";
             buttonReverse.Text = "1/x";
+            toolTip.SetToolTip(buttonReverse, "Найти число, обратное текущему");
             buttonReverse.UseVisualStyleBackColor = true;
             // 
             // buttonPlus
@@ -565,6 +584,7 @@
             buttonBackSpace.TabIndex = 33;
             buttonBackSpace.Tag = "20";
             buttonBackSpace.Text = "BS";
+            toolTip.SetToolTip(buttonBackSpace, "Удалить крайнюю правую цифру");
             buttonBackSpace.UseVisualStyleBackColor = true;
             // 
             // buttonPI
@@ -576,6 +596,7 @@
             buttonPI.TabIndex = 34;
             buttonPI.Tag = "21";
             buttonPI.Text = "π";
+            toolTip.SetToolTip(buttonPI, "Число ПИ");
             buttonPI.UseVisualStyleBackColor = true;
             // 
             // tableChangeNotation
@@ -603,6 +624,7 @@
             trackBarNotation.Name = "trackBarNotation";
             trackBarNotation.Size = new Size(271, 27);
             trackBarNotation.TabIndex = 1;
+            toolTip.SetToolTip(trackBarNotation, "Сдвиньте ползунок для изменения системы счисления");
             trackBarNotation.Value = 2;
             // 
             // tableNotation
@@ -632,6 +654,7 @@
             labelNotationValue.Size = new Size(133, 27);
             labelNotationValue.TabIndex = 1;
             labelNotationValue.TextAlign = ContentAlignment.MiddleCenter;
+            toolTip.SetToolTip(labelNotationValue, "Текущая система счисления");
             // 
             // labelNotationText
             // 
@@ -673,6 +696,7 @@
             labelResult.TabIndex = 0;
             labelResult.Text = "0";
             labelResult.TextAlign = ContentAlignment.MiddleRight;
+            toolTip.SetToolTip(labelResult, "Текущее значение калькулятора");
             // 
             // textBoxFormula
             // 
@@ -684,6 +708,7 @@
             textBoxFormula.Size = new Size(271, 16);
             textBoxFormula.TabIndex = 1;
             textBoxFormula.TextAlign = HorizontalAlignment.Right;
+            toolTip.SetToolTip(textBoxFormula, "Формула текущего выражения");
             // 
             // tab2
             // 
@@ -701,7 +726,9 @@
             tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(label1, 0, 0);
+            tableLayoutPanel1.Controls.Add(labelHistoryText, 0, 0);
+            tableLayoutPanel1.Controls.Add(listBoxHistoryRecords, 0, 1);
+            tableLayoutPanel1.Controls.Add(buttonClearHistory, 0, 2);
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 3;
@@ -711,18 +738,41 @@
             tableLayoutPanel1.Size = new Size(277, 435);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // label1
+            // labelHistoryText
             // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label1.AutoSize = true;
-            label1.BackColor = SystemColors.Control;
-            label1.Location = new Point(3, 3);
-            label1.Margin = new Padding(3);
-            label1.Name = "label1";
-            label1.Size = new Size(271, 37);
-            label1.TabIndex = 0;
-            label1.Text = "История калькулятора";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
+            labelHistoryText.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelHistoryText.AutoSize = true;
+            labelHistoryText.BackColor = SystemColors.Control;
+            labelHistoryText.Location = new Point(3, 3);
+            labelHistoryText.Margin = new Padding(3);
+            labelHistoryText.Name = "labelHistoryText";
+            labelHistoryText.Size = new Size(271, 37);
+            labelHistoryText.TabIndex = 0;
+            labelHistoryText.Text = "История калькулятора";
+            labelHistoryText.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // listBoxHistoryRecords
+            // 
+            listBoxHistoryRecords.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            listBoxHistoryRecords.BorderStyle = BorderStyle.None;
+            listBoxHistoryRecords.FormattingEnabled = true;
+            listBoxHistoryRecords.HorizontalScrollbar = true;
+            listBoxHistoryRecords.ItemHeight = 15;
+            listBoxHistoryRecords.Location = new Point(3, 46);
+            listBoxHistoryRecords.Name = "listBoxHistoryRecords";
+            listBoxHistoryRecords.Size = new Size(271, 330);
+            listBoxHistoryRecords.TabIndex = 1;
+            // 
+            // buttonClearHistory
+            // 
+            buttonClearHistory.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            buttonClearHistory.Location = new Point(3, 394);
+            buttonClearHistory.Name = "buttonClearHistory";
+            buttonClearHistory.Size = new Size(271, 38);
+            buttonClearHistory.TabIndex = 2;
+            buttonClearHistory.Text = "История";
+            toolTip.SetToolTip(buttonClearHistory, "Нажмите, чтобы очистить историю");
+            buttonClearHistory.UseVisualStyleBackColor = true;
             // 
             // tab3
             // 
@@ -736,6 +786,7 @@
             // 
             // tab4
             // 
+            tab4.Controls.Add(labelInfo);
             tab4.Location = new Point(4, 24);
             tab4.Name = "tab4";
             tab4.Padding = new Padding(3);
@@ -744,18 +795,30 @@
             tab4.Text = "Справка";
             tab4.UseVisualStyleBackColor = true;
             // 
+            // labelInfo
+            // 
+            labelInfo.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelInfo.BackColor = SystemColors.Control;
+            labelInfo.Location = new Point(0, 0);
+            labelInfo.Margin = new Padding(3);
+            labelInfo.Name = "labelInfo";
+            labelInfo.Size = new Size(277, 435);
+            labelInfo.TabIndex = 0;
+            labelInfo.Text = resources.GetString("labelInfo.Text");
+            labelInfo.TextAlign = ContentAlignment.TopCenter;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(284, 461);
-            Controls.Add(tabControl1);
+            Controls.Add(tabControl);
             MaximumSize = new Size(1920, 1080);
             MinimumSize = new Size(300, 500);
             Name = "MainWindow";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "P-ичный калькулятор";
-            tabControl1.ResumeLayout(false);
+            tabControl.ResumeLayout(false);
             tab1.ResumeLayout(false);
             tableMain.ResumeLayout(false);
             tableCalculatorButtons.ResumeLayout(false);
@@ -769,12 +832,13 @@
             tab2.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            tab4.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private TabControl tabControl1;
+        private TabControl tabControl;
         private TabPage tab1;
         private TabPage tab2;
         private TabPage tab3;
@@ -825,6 +889,10 @@
         private TableLayoutPanel tableNotation;
         private TextBox textBoxFormula;
         private TableLayoutPanel tableLayoutPanel1;
-        private Label label1;
+        private Label labelHistoryText;
+        private ListBox listBoxHistoryRecords;
+        private Button buttonClearHistory;
+        private Label labelInfo;
+        private ToolTip toolTip;
     }
 }

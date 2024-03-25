@@ -47,5 +47,10 @@
 		{
 			return state;
 		}
+
+		public void SetNotation(int newP)
+		{
+			number.ChangeP(newP);
+		}
 	}
 }

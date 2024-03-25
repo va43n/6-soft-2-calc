@@ -23,10 +23,6 @@
             if (tag == 22 || (operation != Operation.None && tag >= 23 && tag <= 26))
 				CalculateOperation();
 
-			//"="
-			if (tag == 22)
-				operation = Operation.None;
-
 			//"+", "-", "*", "/"
 			else if (tag >= 23 && tag <= 26)
 				SetOperation(tag);
@@ -92,13 +88,21 @@
 			return rightOperand.ConvertToP();
 		}
 
-		public void SetNotation(int newP)
+		public string SetNotation(int newP)
 		{
 			leftOperand.ChangeP(newP);
-            leftOperand.ClearNumber();
 
+            rightOperand.ClearNumber();
             rightOperand.ChangeP(newP);
-			rightOperand.ClearNumber();
+
+			return leftOperand.ConvertToP();
+		}
+
+		public string SetSameOperand()
+		{
+			rightOperand.Copy(leftOperand);
+
+			return rightOperand.ConvertToP();
 		}
 
 		public Operation CheckOperation()

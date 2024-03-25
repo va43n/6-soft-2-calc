@@ -40,9 +40,14 @@ namespace _6_soft_2_calc
             DisableUselessMemoryButtons();
 
             controller = new Controller(number);
-		}
 
-		private void ButtonClick(object? sender, EventArgs e)
+            tabControl.Selecting += TabControl_Selecting;
+
+            buttonClearHistory.Click += ButtonClearHistory_Click;
+			DisableClearHistoryButton();
+        }
+
+        private void ButtonClick(object? sender, EventArgs e)
 		{
 			Button button = (Button)sender;
 			DoCommandInController(Convert.ToInt32(button.Tag.ToString()));
@@ -62,7 +67,7 @@ namespace _6_soft_2_calc
 					//"Clear"
 					if (tag == 18)
 					{
-						controller.Clear();
+						controller.ClearEdit();
 						ClearLabels();
 					}
 
@@ -94,10 +99,10 @@ namespace _6_soft_2_calc
                         EnableMemoryButtons();
                 }
 			}
-			catch (Exception e)
+			catch (CalculatorException e)
 			{
 				MessageBox.Show(e.Message);
-				controller.Clear();
+				controller.ClearController();
 
 				ClearLabels();
 			}
@@ -108,13 +113,11 @@ namespace _6_soft_2_calc
 			int number = trackBarNotation.Value;
 
 			labelNotationValue.Text = number.ToString();
-			
-			controller.ChangeNotation(number);
-			controller.Clear();
+            DisableHigherNotationButtons(number);
 
-			ClearLabels();
+            ClearLabels();
 
-			DisableHigherNotationButtons(number);
+            labelResult.Text = controller.ChangeNotation(number);
 		}
 
 		private void DisableHigherNotationButtons(int notation)
@@ -143,5 +146,48 @@ namespace _6_soft_2_calc
 			labelResult.Text = "0";
 			textBoxFormula.Text = "";
 		}
-	}
+
+        private void ButtonClearHistory_Click(object? sender, EventArgs e)
+        {
+			controller.ClearRecordsFromHistory();
+
+			listBoxHistoryRecords.Items.Clear();
+
+			DisableClearHistoryButton();
+        }
+
+		private void EnableClearHistoryButton()
+		{
+			buttonClearHistory.Enabled = true;
+			buttonClearHistory.Text = "Очистить историю";
+		}
+
+        private void DisableClearHistoryButton()
+        {
+            buttonClearHistory.Enabled = false;
+            buttonClearHistory.Text = "История пуста";
+        }
+
+        private void TabControl_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+			List<string> records = new List<string>();
+
+			//history
+            if (tabControl.SelectedIndex == 1)
+            {
+				records.AddRange(controller.GetRecordsFromHistory());
+				if (records.Count != 0)
+				{
+					EnableClearHistoryButton();
+
+					for (int i = records.Count - 1; i >= 0; i--)
+						listBoxHistoryRecords.Items.Add(records[i]);
+				}
+				else
+					DisableClearHistoryButton();
+            }
+            else
+                listBoxHistoryRecords.Items.Clear();
+        }
+    }
 }

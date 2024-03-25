@@ -55,10 +55,17 @@
 			else
 				weightPower = n0.Length - 1;
 
-			weightPower = Convert.ToInt32(Math.Pow(p0, weightPower));
+			try
+			{
+				weightPower = Convert.ToInt32(Math.Pow(p0, weightPower));
 
-			for (int i = 0; i < numberWithoutDelimeter.Length; i++)
-				result += weightPower * alphabet.IndexOf(numberWithoutDelimeter[i]) / Math.Pow(p0, i);
+                for (int i = 0; i < numberWithoutDelimeter.Length; i++)
+                    result += weightPower * alphabet.IndexOf(numberWithoutDelimeter[i]) / Math.Pow(p0, i);
+			}
+			catch (OverflowException)
+			{
+				throw new CalculatorException("Вы ввели слишком большое число.");
+			}
 
 			return result;
 		}
@@ -116,7 +123,7 @@
 			int accuracy;
 
 			if (this.p != number2.p)
-				throw new Exception("p1 и p2 не равны.");
+				throw new CalculatorException("p1 и p2 не равны.");
 
 			if (operation == Operation.Addition)
 				this.number += number2.number;
@@ -127,7 +134,7 @@
 			else if (operation == Operation.Division)
 			{
 				if (number2.number == 0)
-					throw new Exception("Деление на 0 запрещено.");
+					throw new CalculatorException("Деление на 0 запрещено.");
 				this.number /= number2.number;
 			}
 
@@ -175,8 +182,17 @@
 
 		public void ChangeP(int newP)
 		{
-			p = newP;
-		}
+			int accuracy;
+			string strResult = number.ToString();
+
+            accuracy = strResult.IndexOf(".");
+            if (accuracy == -1)
+                accuracy = strResult.IndexOf(",");
+            accuracy = accuracy != -1 ? strResult.Length - accuracy - 1 : 0;
+
+            p = newP;
+            c = (int)Math.Round(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
+        }
 
 		public void ClearNumber()
 		{

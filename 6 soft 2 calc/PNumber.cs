@@ -41,7 +41,9 @@
 			delimeterPosition = n0.IndexOf('.');
 			if (delimeterPosition == -1)
 				delimeterPosition = n0.IndexOf(",");
+
 			c = delimeterPosition != -1 ? n0.Length - delimeterPosition - 1 : 0;
+            c = (int)Math.Round(c * Math.Log(10) / Math.Log(p) + 0.5);
 
             mode = CalculationMode.Double;
         }

@@ -43,7 +43,7 @@
 				delimeterPosition = n0.IndexOf(",");
 
 			c = delimeterPosition != -1 ? n0.Length - delimeterPosition - 1 : 0;
-            c = (int)Math.Round(c * Math.Log(10) / Math.Log(p) + 0.5);
+            c = (int)Math.Floor(c * Math.Log(10) / Math.Log(p) + 0.5);
 
             mode = CalculationMode.Double;
         }
@@ -140,11 +140,20 @@
 				throw new CalculatorException("p1 и p2 не равны.");
 
 			if (operation == Operation.Addition)
-				this.number += number2.number;
+			{
+                this.number += number2.number;
+                this.number = this.c > number2.c ? Math.Round(this.number, this.c) : Math.Round(this.number, number2.c);
+            }
 			else if (operation == Operation.Subtraction)
-				this.number -= number2.number;
+			{
+                this.number -= number2.number;
+				this.number = this.c > number2.c ? Math.Round(this.number, this.c) : Math.Round(this.number, number2.c);
+            }
 			else if (operation == Operation.Multiplication)
-				this.number *= number2.number;
+			{
+                this.number *= number2.number;
+                this.number = Math.Round(this.number, this.c + number2.c);
+            }
 			else if (operation == Operation.Division)
 			{
 				if (number2.number == 0)
@@ -162,7 +171,7 @@
 				accuracy = strResult.IndexOf(",");
 			accuracy = accuracy != -1 ? strResult.Length - accuracy - 1 : 0;
 
-			this.c = (int)Math.Round(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
+			this.c = (int)Math.Floor(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
 		}
 
 		public void CalculateFunction(Function function)
@@ -195,8 +204,8 @@
 				accuracy = strResult.IndexOf(",");
 			accuracy = accuracy != -1 ? strResult.Length - accuracy - 1 : 0;
 
-			this.c = (int)Math.Round(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
-		}
+			this.c = (int)Math.Floor(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
+        }
 
 		public void ChangeP(int newP)
 		{
@@ -209,7 +218,7 @@
             accuracy = accuracy != -1 ? strResult.Length - accuracy - 1 : 0;
 
             p = newP;
-            c = (int)Math.Round(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
+            c = (int)Math.Floor(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
         }
 
 		public void ClearNumber()

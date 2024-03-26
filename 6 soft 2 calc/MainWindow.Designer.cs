@@ -493,7 +493,7 @@
             buttonDelimeter.TabIndex = 30;
             buttonDelimeter.Tag = "16";
             buttonDelimeter.Text = ".";
-            toolTip.SetToolTip(buttonDelimeter, "Разделитель целой и дродной части");
+            toolTip.SetToolTip(buttonDelimeter, "Разделитель целой и дробной части");
             buttonDelimeter.UseVisualStyleBackColor = true;
             // 
             // buttonSquare

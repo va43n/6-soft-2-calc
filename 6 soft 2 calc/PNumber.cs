@@ -2,8 +2,9 @@
 {
 	public enum Operation { None, Addition, Subtraction, Multiplication, Division }
 
-
 	public enum Function { Square, SquareRoot, Reverse }
+
+	public enum CalculationMode { Double, Int }
 
 
 	public class PNumber
@@ -12,12 +13,14 @@
 		private double number;
 		private int p;
 		private int c;
+		private CalculationMode mode;
 
 		public PNumber()
 		{
 			number = 0;
 			p = 2;
 			c = 0;
+			mode = CalculationMode.Double;
 		}
 
 		public PNumber(string n0, int p0)
@@ -39,7 +42,9 @@
 			if (delimeterPosition == -1)
 				delimeterPosition = n0.IndexOf(",");
 			c = delimeterPosition != -1 ? n0.Length - delimeterPosition - 1 : 0;
-		}
+
+            mode = CalculationMode.Double;
+        }
 
 		private double ConvertTo10(string n0, int p0)
 		{
@@ -75,10 +80,17 @@
 			string result;
 			double absNumber = Math.Abs(number);
 
-			if (number == Math.Floor(number))
-				result = TenToInt(Convert.ToInt32(absNumber));
-			else
-				result = TenToInt(Convert.ToInt32(Math.Floor(absNumber))) + "." + TenToDouble(absNumber - Math.Floor(absNumber));
+			try
+			{
+                if (number == Math.Floor(number))
+                    result = TenToInt(Convert.ToInt32(absNumber));
+                else
+                    result = TenToInt(Convert.ToInt32(Math.Floor(absNumber))) + "." + TenToDouble(absNumber - Math.Floor(absNumber));
+            }
+			catch (OverflowException)
+			{
+                throw new CalculatorException("Вы ввели слишком большое число.");
+            }
 
 			result = number >= 0 ? result : "-" + result;
 
@@ -135,8 +147,9 @@
 			{
 				if (number2.number == 0)
 					throw new CalculatorException("Деление на 0 запрещено.");
-				this.number /= number2.number;
-			}
+
+				this.number = mode == CalculationMode.Double ? this.number / number2.number : Math.Floor(this.number / number2.number);
+            }
 
 			strResult = this.number.ToString();
 			if (strResult[0] == '-')
@@ -160,15 +173,18 @@
 			else if (function == Function.SquareRoot)
 			{
 				if (number < 0)
-					throw new Exception("Отрицательное число под корнем недопустимо.");
-				number = Math.Sqrt(number);
-			}
+					throw new CalculatorException("Отрицательное число под корнем недопустимо.");
+
+				number = mode == CalculationMode.Double ? Math.Sqrt(number) : Math.Floor(Math.Sqrt(number));
+
+            }
 			else if (function == Function.Reverse)
 			{
 				if (number == 0)
-					throw new Exception("Деление на 0 запрещено.");
-				number = 1 / number;
-			}
+					throw new CalculatorException("Деление на 0 запрещено.");
+
+                number = mode == CalculationMode.Double ? 1 / number : Math.Floor(1 / number);
+            }
 
 			strResult = Math.Abs(number).ToString();
 
@@ -205,6 +221,7 @@
 			this.number = number.number;
 			this.p = number.p;
 			this.c = number.c;
+			this.mode = number.mode;
 		}
 
 		public void CreatePI()
@@ -213,6 +230,9 @@
 			int delimeterPosition;
 
 			number = Math.PI;
+			if (mode == CalculationMode.Int)
+				number = Math.Floor(number);
+
 			strResult = number.ToString();
             delimeterPosition = strResult.IndexOf('.');
             if (delimeterPosition == -1)
@@ -224,6 +244,25 @@
 		public int GetP()
 		{
 			return p;
+		}
+
+		public void ChangeCalculationMode(CalculationMode newMode)
+		{
+			int delimeterPosition;
+			string strResult = number.ToString();
+
+			mode = newMode;
+			if (mode == CalculationMode.Int)
+			{
+                delimeterPosition = strResult.IndexOf('.');
+                if (delimeterPosition == -1)
+                    delimeterPosition = strResult.IndexOf(",");
+
+				if (delimeterPosition != -1)
+					number = Convert.ToDouble(strResult.Substring(0, delimeterPosition));
+
+				c = 0;
+            }
 		}
 	}
 }

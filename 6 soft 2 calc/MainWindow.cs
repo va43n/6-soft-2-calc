@@ -45,6 +45,8 @@ namespace _6_soft_2_calc
 
             buttonClearHistory.Click += ButtonClearHistory_Click;
 			DisableClearHistoryButton();
+
+            buttonChangeCurrentCalculationMode.Click += ButtonChangeCurrentCalculationMode_Click;
         }
 
         private void ButtonClick(object? sender, EventArgs e)
@@ -188,6 +190,38 @@ namespace _6_soft_2_calc
             }
             else
                 listBoxHistoryRecords.Items.Clear();
+        }
+
+        private void ButtonChangeCurrentCalculationMode_Click(object? sender, EventArgs e)
+        {
+			string result;
+
+            if (controller.GetCalculationMode() == CalculationMode.Double)
+			{
+				result = controller.ChangeCalculationMode(CalculationMode.Int);
+
+				ClearLabels();
+				labelResult.Text = result;
+
+				buttonChangeCurrentCalculationMode.Text = "Поменять на действительные числа";
+				labelCurrentCalculationModeValue.Text = "Целые числа";
+
+				buttonDelimeter.Enabled = false;
+				buttonReverse.Enabled = false;
+			}
+			else
+			{
+                result = controller.ChangeCalculationMode(CalculationMode.Double);
+
+                ClearLabels();
+                labelResult.Text = result;
+
+                buttonChangeCurrentCalculationMode.Text = "Поменять на целые числа";
+                labelCurrentCalculationModeValue.Text = "Действительные числа";
+
+                buttonDelimeter.Enabled = true;
+                buttonReverse.Enabled = true;
+            }
         }
     }
 }

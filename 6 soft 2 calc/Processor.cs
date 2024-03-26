@@ -52,7 +52,9 @@
 
 		public void SetOperation(int tag)
 		{
-			if (tag == 23)
+			if (tag == -1)
+				operation = Operation.None;
+			else if (tag == 23)
 				operation = Operation.Addition;
 			else if (tag == 24)
 				operation = Operation.Subtraction;
@@ -108,6 +110,14 @@
 		public Operation CheckOperation()
 		{
 			return operation;
+		}
+
+		public string ChangeCalculationModeInOperands(CalculationMode newMode)
+		{
+			leftOperand.ChangeCalculationMode(newMode);
+			rightOperand.ChangeCalculationMode(newMode);
+
+			return leftOperand.ConvertToP();
 		}
 	}
 }

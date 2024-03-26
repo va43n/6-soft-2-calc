@@ -83,6 +83,13 @@
             listBoxHistoryRecords = new ListBox();
             buttonClearHistory = new Button();
             tab3 = new TabPage();
+            tableLayoutPanelOptions = new TableLayoutPanel();
+            tableLayoutPanelCalculationModeOption = new TableLayoutPanel();
+            labelCalculationModeOption = new Label();
+            tableLayoutPanelCurrentCalculationMode = new TableLayoutPanel();
+            labelCurrentCalculationModeText = new Label();
+            labelCurrentCalculationModeValue = new Label();
+            buttonChangeCurrentCalculationMode = new Button();
             tab4 = new TabPage();
             labelInfo = new Label();
             toolTip = new ToolTip(components);
@@ -96,6 +103,10 @@
             tableResult.SuspendLayout();
             tab2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            tab3.SuspendLayout();
+            tableLayoutPanelOptions.SuspendLayout();
+            tableLayoutPanelCalculationModeOption.SuspendLayout();
+            tableLayoutPanelCurrentCalculationMode.SuspendLayout();
             tab4.SuspendLayout();
             SuspendLayout();
             // 
@@ -776,6 +787,7 @@
             // 
             // tab3
             // 
+            tab3.Controls.Add(tableLayoutPanelOptions);
             tab3.Location = new Point(4, 24);
             tab3.Name = "tab3";
             tab3.Padding = new Padding(3);
@@ -783,6 +795,105 @@
             tab3.TabIndex = 2;
             tab3.Text = "Настройки";
             tab3.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanelOptions
+            // 
+            tableLayoutPanelOptions.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanelOptions.ColumnCount = 1;
+            tableLayoutPanelOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanelOptions.Controls.Add(tableLayoutPanelCalculationModeOption, 0, 0);
+            tableLayoutPanelOptions.Location = new Point(0, 0);
+            tableLayoutPanelOptions.Margin = new Padding(0);
+            tableLayoutPanelOptions.Name = "tableLayoutPanelOptions";
+            tableLayoutPanelOptions.RowCount = 2;
+            tableLayoutPanelOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
+            tableLayoutPanelOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
+            tableLayoutPanelOptions.Size = new Size(277, 435);
+            tableLayoutPanelOptions.TabIndex = 0;
+            // 
+            // tableLayoutPanelCalculationModeOption
+            // 
+            tableLayoutPanelCalculationModeOption.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanelCalculationModeOption.ColumnCount = 1;
+            tableLayoutPanelCalculationModeOption.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelCalculationModeOption.Controls.Add(labelCalculationModeOption, 0, 0);
+            tableLayoutPanelCalculationModeOption.Controls.Add(tableLayoutPanelCurrentCalculationMode, 0, 1);
+            tableLayoutPanelCalculationModeOption.Location = new Point(0, 0);
+            tableLayoutPanelCalculationModeOption.Margin = new Padding(0);
+            tableLayoutPanelCalculationModeOption.Name = "tableLayoutPanelCalculationModeOption";
+            tableLayoutPanelCalculationModeOption.RowCount = 2;
+            tableLayoutPanelCalculationModeOption.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanelCalculationModeOption.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanelCalculationModeOption.Size = new Size(277, 130);
+            tableLayoutPanelCalculationModeOption.TabIndex = 0;
+            // 
+            // labelCalculationModeOption
+            // 
+            labelCalculationModeOption.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelCalculationModeOption.AutoSize = true;
+            labelCalculationModeOption.BackColor = SystemColors.Control;
+            labelCalculationModeOption.Location = new Point(3, 3);
+            labelCalculationModeOption.Margin = new Padding(3);
+            labelCalculationModeOption.Name = "labelCalculationModeOption";
+            labelCalculationModeOption.Size = new Size(271, 59);
+            labelCalculationModeOption.TabIndex = 0;
+            labelCalculationModeOption.Text = "Режим работы калькулятора (Действительные числа/целые числа).";
+            labelCalculationModeOption.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanelCurrentCalculationMode
+            // 
+            tableLayoutPanelCurrentCalculationMode.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanelCurrentCalculationMode.ColumnCount = 3;
+            tableLayoutPanelCurrentCalculationMode.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanelCurrentCalculationMode.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanelCurrentCalculationMode.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanelCurrentCalculationMode.Controls.Add(labelCurrentCalculationModeText, 0, 0);
+            tableLayoutPanelCurrentCalculationMode.Controls.Add(labelCurrentCalculationModeValue, 1, 0);
+            tableLayoutPanelCurrentCalculationMode.Controls.Add(buttonChangeCurrentCalculationMode, 2, 0);
+            tableLayoutPanelCurrentCalculationMode.Location = new Point(0, 65);
+            tableLayoutPanelCurrentCalculationMode.Margin = new Padding(0);
+            tableLayoutPanelCurrentCalculationMode.Name = "tableLayoutPanelCurrentCalculationMode";
+            tableLayoutPanelCurrentCalculationMode.RowCount = 1;
+            tableLayoutPanelCurrentCalculationMode.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanelCurrentCalculationMode.Size = new Size(277, 65);
+            tableLayoutPanelCurrentCalculationMode.TabIndex = 1;
+            // 
+            // labelCurrentCalculationModeText
+            // 
+            labelCurrentCalculationModeText.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelCurrentCalculationModeText.AutoSize = true;
+            labelCurrentCalculationModeText.BackColor = SystemColors.Control;
+            labelCurrentCalculationModeText.Location = new Point(3, 3);
+            labelCurrentCalculationModeText.Margin = new Padding(3);
+            labelCurrentCalculationModeText.Name = "labelCurrentCalculationModeText";
+            labelCurrentCalculationModeText.Size = new Size(86, 59);
+            labelCurrentCalculationModeText.TabIndex = 0;
+            labelCurrentCalculationModeText.Text = "Текущий режим:";
+            labelCurrentCalculationModeText.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // labelCurrentCalculationModeValue
+            // 
+            labelCurrentCalculationModeValue.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelCurrentCalculationModeValue.AutoSize = true;
+            labelCurrentCalculationModeValue.BackColor = SystemColors.Control;
+            labelCurrentCalculationModeValue.Location = new Point(95, 3);
+            labelCurrentCalculationModeValue.Margin = new Padding(3);
+            labelCurrentCalculationModeValue.Name = "labelCurrentCalculationModeValue";
+            labelCurrentCalculationModeValue.Size = new Size(86, 59);
+            labelCurrentCalculationModeValue.TabIndex = 1;
+            labelCurrentCalculationModeValue.Text = "Действительные числа";
+            labelCurrentCalculationModeValue.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // buttonChangeCurrentCalculationMode
+            // 
+            buttonChangeCurrentCalculationMode.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            buttonChangeCurrentCalculationMode.Location = new Point(187, 3);
+            buttonChangeCurrentCalculationMode.Name = "buttonChangeCurrentCalculationMode";
+            buttonChangeCurrentCalculationMode.Size = new Size(87, 59);
+            buttonChangeCurrentCalculationMode.TabIndex = 2;
+            buttonChangeCurrentCalculationMode.Text = "Поменять на целые числа";
+            toolTip.SetToolTip(buttonChangeCurrentCalculationMode, "Нажмите, чтобы поменять режим работы калькулятора");
+            buttonChangeCurrentCalculationMode.UseVisualStyleBackColor = true;
             // 
             // tab4
             // 
@@ -832,6 +943,12 @@
             tab2.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            tab3.ResumeLayout(false);
+            tableLayoutPanelOptions.ResumeLayout(false);
+            tableLayoutPanelCalculationModeOption.ResumeLayout(false);
+            tableLayoutPanelCalculationModeOption.PerformLayout();
+            tableLayoutPanelCurrentCalculationMode.ResumeLayout(false);
+            tableLayoutPanelCurrentCalculationMode.PerformLayout();
             tab4.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -894,5 +1011,12 @@
         private Button buttonClearHistory;
         private Label labelInfo;
         private ToolTip toolTip;
+        private TableLayoutPanel tableLayoutPanelOptions;
+        private TableLayoutPanel tableLayoutPanelCalculationModeOption;
+        private Label labelCalculationModeOption;
+        private TableLayoutPanel tableLayoutPanelCurrentCalculationMode;
+        private Label labelCurrentCalculationModeText;
+        private Label labelCurrentCalculationModeValue;
+        private Button buttonChangeCurrentCalculationMode;
     }
 }

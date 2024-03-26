@@ -13,6 +13,9 @@
 		private string[] formulaSymbols = { "=", "+", "-", "*", "/",
 											"^2", "^(-1)", "^(1/2)" };
 
+		private CalculationMode calculationMode;
+
+
 		public Controller(int p)
 		{
 			this.p = p;
@@ -23,6 +26,8 @@
 			history = new History();
 
 			lastInput = 0;
+
+			calculationMode = CalculationMode.Double;
 		}
 
 		~Controller()
@@ -78,7 +83,10 @@
                     else
                     {
 						PNumber number = new PNumber(result, p);
-						processor.SetOperand(number);
+                        if (calculationMode == CalculationMode.Int)
+                            number.ChangeCalculationMode(CalculationMode.Int);
+
+                        processor.SetOperand(number);
 
                         //"^2", "^(-1)", "^(1/2)"
                         if (lastInput >= 27 && lastInput <= 29)
@@ -93,7 +101,7 @@
 
 					editor.ChangeCurrentNumber(result);
 				
-					history.Add(string.Format("{0} ({1})", editor.GetFormula(), p));
+					history.Add(string.Format("{0} ({1}, {2})", editor.GetFormula(), p, calculationMode));
 				}
 
 				//"+", "-", "*", "/"
@@ -114,7 +122,10 @@
 					else
 					{
 						PNumber number = new PNumber(result, p);
-						processor.SetOperand(number);
+                        if (calculationMode == CalculationMode.Int)
+                            number.ChangeCalculationMode(CalculationMode.Int);
+
+                        processor.SetOperand(number);
 
                         //"^2", "^(-1)", "^(1/2)" || "="
                         if (lastInput >= 27 && lastInput <= 29 || lastInput == 22)
@@ -148,9 +159,20 @@
 					else
 					{
 						PNumber number = new PNumber(result, p);
-						processor.SetOperand(number);
+                        if (calculationMode == CalculationMode.Int)
+                            number.ChangeCalculationMode(CalculationMode.Int);
 
-						editor.UpgradeFormula(result + formulaSymbols[tag - 22]);
+                        processor.SetOperand(number);
+
+
+                        //"="
+                        if (lastInput == 22)
+						{
+                            editor.UpgradeFormula(formulaSymbols[tag - 22]);
+							processor.SetOperation(-1);
+                        }
+						else
+							editor.UpgradeFormula(result + formulaSymbols[tag - 22]);
 					}
 
 					result = DoProcessorCommand(tag);
@@ -163,6 +185,8 @@
 			else if (tag == 21)
 			{
 				PNumber number = new PNumber();
+				if (calculationMode == CalculationMode.Int)
+					number.ChangeCalculationMode(CalculationMode.Int);
 
 				number.ChangeP(p);
 				number.CreatePI();
@@ -231,7 +255,8 @@
 
 			editor.ClearEditor();
 			editor.ChangeCurrentNumber(result);
-			editor.UpgradeFormula(result);
+			if (result != "0")
+				editor.UpgradeFormula(result);
 
 			return result;
         }
@@ -272,6 +297,27 @@
 		public List<string> GetRecordsFromHistory()
 		{
 			return history.GetHistory();
+		}
+
+		public string ChangeCalculationMode(CalculationMode newMode)
+		{
+			string result;
+
+			calculationMode = newMode;
+
+			result = processor.ChangeCalculationModeInOperands(newMode);
+			editor.ClearEditor();
+			editor.ChangeCurrentNumber(result);
+			editor.UpgradeFormula(result);
+
+            memory.ChangeCalculationModeInMemory(newMode);
+
+			return result;
+		}
+
+		public CalculationMode GetCalculationMode()
+		{
+			return calculationMode;
 		}
 	}
 }

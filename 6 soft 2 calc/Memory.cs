@@ -52,5 +52,10 @@
 		{
 			number.ChangeP(newP);
 		}
+
+		public void ChangeCalculationModeInMemory(CalculationMode newMode)
+		{
+			number.ChangeCalculationMode(newMode);
+		}
 	}
 }

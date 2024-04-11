@@ -7,7 +7,7 @@
 
 		public Editor()
 		{
-			currentNumber = "0";
+			currentNumber = PNumber.zero;
 			formula = "";
 		}
 
@@ -15,31 +15,31 @@
 		{
 			//0123456789ABCDEF
 			if (tag < 16)
-				currentNumber = currentNumber == "0" ? PNumber.alphabet[tag].ToString() : currentNumber + PNumber.alphabet[tag];
+				currentNumber = currentNumber == PNumber.zero ? PNumber.alphabet[tag].ToString() : currentNumber + PNumber.alphabet[tag];
 
-			else if (tag == 16 && currentNumber.IndexOf(".") == -1)
-				currentNumber += currentNumber == "" ? "0." : ".";
+			else if (tag == 16 && currentNumber.IndexOf(PNumber.standardDelimeter) == -1)
+				currentNumber += currentNumber == "" ? PNumber.zero + PNumber.standardDelimeter : PNumber.standardDelimeter;
 
 			//"+/-"
 			else if (tag == 17)
 			{
-				if (currentNumber[0] == '-')
+				if (currentNumber[0] == PNumber.stringSign[0])
 					currentNumber = currentNumber.Remove(0, 1);
 				else
-					currentNumber = currentNumber.Insert(0, "-");
+					currentNumber = currentNumber.Insert(0, PNumber.stringSign);
 			}
 
 			//"Clear"
 			else if (tag == 18)
 			{
-				currentNumber = "0";
+				currentNumber = PNumber.zero;
 				formula = "";
 			}
 
 			//"CE"
 			else if (tag == 19)
 			{
-				currentNumber = "0";
+				currentNumber = PNumber.zero;
 			}
 
 			//"BS"
@@ -47,7 +47,7 @@
 			{
 				if (currentNumber.Length == 1)
 				{
-					currentNumber = "0";
+					currentNumber = PNumber.zero;
 					return currentNumber;
 				}
 				currentNumber = currentNumber.Remove(currentNumber.Length - 1, 1);
@@ -61,7 +61,7 @@
 				DeleteUnnecessarySymbols();
 				result = currentNumber;
 
-                currentNumber = "0";
+                currentNumber = PNumber.zero;
 
 				return result;
 			}
@@ -82,7 +82,7 @@
 		public void ClearEditor()
 		{
 			formula = "";
-			currentNumber = "0";
+			currentNumber = PNumber.zero;
 		}
 
 		public string GetFormula()
@@ -105,13 +105,13 @@
 		{
 			for (int i = currentNumber.Length - 1; i >= 0; i--)
 			{
-				if (currentNumber[i] != '0' && currentNumber[i] != '.' || currentNumber.IndexOf(".") == -1)
+				if (currentNumber[i] != PNumber.zero[0] && currentNumber[i] != PNumber.standardDelimeter[0] || currentNumber.IndexOf(PNumber.standardDelimeter) == -1)
 					break;
 				currentNumber = currentNumber.Remove(i, 1);
 			}
 
-			if (currentNumber == "-0")
-				currentNumber = "0";
+			if (currentNumber == PNumber.stringSign + PNumber.zero)
+				currentNumber = PNumber.zero;
 		}
 	}
 }

@@ -45,7 +45,7 @@
 				//tag: 0123456789ABCDEF
 				//lastInput: PI || MR
 				if (tag <= 15 && (lastInput == 21 || lastInput == 32))
-					editor.ChangeCurrentNumber("0");
+					editor.ChangeCurrentNumber(PNumber.zero);
 
                 //tag: 0123456789ABCDEF
                 //lastInput: "="
@@ -211,7 +211,7 @@
 			//MR
 			else if (tag == 32)
 			{
-				if (memory.CheckMemoryState() == MemoryState.Off)
+				if (memory.CheckMemoryState() == Memory.MemoryState.Off)
 					throw new CalculatorException("В памяти лежит нулевое значение.");
 
 				result = memory.CheckMemoryValue();
@@ -255,7 +255,7 @@
 
 			editor.ClearEditor();
 			editor.ChangeCurrentNumber(result);
-			if (result != "0")
+			if (result != PNumber.zero)
 				editor.UpgradeFormula(result);
 
 			return result;

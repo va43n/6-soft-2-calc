@@ -95,7 +95,7 @@ namespace _6_soft_2_calc
 				//MS || M+
 				else if (tag == 33 || tag == 34)
 				{
-                    if (result == "0")
+                    if (result == PNumber.zero)
                         DisableUselessMemoryButtons();
                     else
                         EnableMemoryButtons();
@@ -145,7 +145,7 @@ namespace _6_soft_2_calc
 
 		private void ClearLabels()
 		{
-			labelResult.Text = "0";
+			labelResult.Text = PNumber.zero;
 			textBoxFormula.Text = "";
 		}
 

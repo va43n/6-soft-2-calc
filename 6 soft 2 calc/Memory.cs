@@ -1,10 +1,11 @@
 ﻿namespace _6_soft_2_calc
 {
-	public enum MemoryState { On, Off }
 
 	public class Memory
 	{
-		private MemoryState state;
+        public enum MemoryState { On, Off }
+
+        private MemoryState state;
 		private PNumber number;
 
 		public Memory()

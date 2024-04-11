@@ -10,6 +10,11 @@
 	public class PNumber
 	{
 		public static string alphabet = "0123456789ABCDEF";
+		public static string zero = "0";
+		public static string standardDelimeter = ".";
+		public static string differentDelimeter = ",";
+		public static string stringSign = "-";
+
 		private double number;
 		private int p;
 		private int c;
@@ -27,7 +32,7 @@
 		{
 			int delimeterPosition, sign;
 
-			if (n0[0] == '-')
+			if (n0[0] == stringSign[0])
 			{
 				sign = -1;
 				n0 = n0.Remove(0, 1);
@@ -38,9 +43,9 @@
 			number = ConvertTo10(n0, p0) * sign;
 			p = p0;
 
-			delimeterPosition = n0.IndexOf('.');
+			delimeterPosition = n0.IndexOf(standardDelimeter);
 			if (delimeterPosition == -1)
-				delimeterPosition = n0.IndexOf(",");
+				delimeterPosition = n0.IndexOf(differentDelimeter);
 
 			c = delimeterPosition != -1 ? n0.Length - delimeterPosition - 1 : 0;
             c = (int)Math.Floor(c * Math.Log(10) / Math.Log(p) + 0.5);
@@ -50,7 +55,7 @@
 
 		private double ConvertTo10(string n0, int p0)
 		{
-			int weightPower, delimeterPosition = n0.IndexOf('.');
+			int weightPower, delimeterPosition = n0.IndexOf(standardDelimeter);
 			string numberWithoutDelimeter = n0;
 			double result = 0;
 
@@ -87,14 +92,14 @@
                 if (number == Math.Floor(number))
                     result = TenToInt(Convert.ToInt32(absNumber));
                 else
-                    result = TenToInt(Convert.ToInt32(Math.Floor(absNumber))) + "." + TenToDouble(absNumber - Math.Floor(absNumber));
+                    result = TenToInt(Convert.ToInt32(Math.Floor(absNumber))) + standardDelimeter + TenToDouble(absNumber - Math.Floor(absNumber));
             }
 			catch (OverflowException)
 			{
                 throw new CalculatorException("Вы ввели слишком большое число.");
             }
 
-			result = number >= 0 ? result : "-" + result;
+			result = number >= 0 ? result : stringSign + result;
 
 			return result;
 		}
@@ -104,7 +109,7 @@
 			string s = "", temp;
 
 			if (number == 0)
-				return "0";
+				return zero;
 
 			while (number >= 1)
 			{
@@ -166,9 +171,9 @@
 			if (strResult[0] == '-')
 				strResult = strResult.Remove(0, 1);
 
-			accuracy = strResult.IndexOf(".");
+			accuracy = strResult.IndexOf(standardDelimeter);
 			if (accuracy == -1)
-				accuracy = strResult.IndexOf(",");
+				accuracy = strResult.IndexOf(differentDelimeter);
 			accuracy = accuracy != -1 ? strResult.Length - accuracy - 1 : 0;
 
 			this.c = (int)Math.Floor(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
@@ -199,9 +204,9 @@
 
 			strResult = Math.Abs(number).ToString();
 
-			accuracy = strResult.IndexOf(".");
+			accuracy = strResult.IndexOf(standardDelimeter);
 			if (accuracy == -1)
-				accuracy = strResult.IndexOf(",");
+				accuracy = strResult.IndexOf(differentDelimeter);
 			accuracy = accuracy != -1 ? strResult.Length - accuracy - 1 : 0;
 
 			this.c = (int)Math.Floor(accuracy * Math.Log(10) / Math.Log(p) + 0.5);
@@ -212,9 +217,9 @@
 			int accuracy;
 			string strResult = number.ToString();
 
-            accuracy = strResult.IndexOf(".");
+            accuracy = strResult.IndexOf(standardDelimeter);
             if (accuracy == -1)
-                accuracy = strResult.IndexOf(",");
+                accuracy = strResult.IndexOf(differentDelimeter);
             accuracy = accuracy != -1 ? strResult.Length - accuracy - 1 : 0;
 
             p = newP;
@@ -245,9 +250,9 @@
 				number = Math.Floor(number);
 
 			strResult = number.ToString();
-            delimeterPosition = strResult.IndexOf('.');
+            delimeterPosition = strResult.IndexOf(standardDelimeter);
             if (delimeterPosition == -1)
-                delimeterPosition = strResult.IndexOf(",");
+                delimeterPosition = strResult.IndexOf(differentDelimeter);
 
             c = delimeterPosition != -1 ? strResult.Length - delimeterPosition - 1 : 0;
         }
@@ -265,9 +270,9 @@
 			mode = newMode;
 			if (mode == CalculationMode.Int)
 			{
-                delimeterPosition = strResult.IndexOf('.');
+                delimeterPosition = strResult.IndexOf(standardDelimeter);
                 if (delimeterPosition == -1)
-                    delimeterPosition = strResult.IndexOf(",");
+                    delimeterPosition = strResult.IndexOf(differentDelimeter);
 
 				if (delimeterPosition != -1)
 					number = Convert.ToDouble(strResult.Substring(0, delimeterPosition));
